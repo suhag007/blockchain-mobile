@@ -6,7 +6,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: '',
+      dollarValue: '1',
       xlmbitbns: '',
       xlmbinance: '',
 
@@ -19,37 +19,67 @@ export default class App extends Component {
       gasbitbns: '',
       gasbinance: ''
     };
+    // this.handleClick = this.handleClick.bind(this);
+    this.getDollarValue = this.getDollarValue.bind(this);
+    this.setDollarValue = this.setDollarValue.bind(this);
+    // this.getBitBnsStatus = this.getBitBnsStatus.bind(this);
   }
 
   componentWillMount() {
     this.getDollarValue();
+    // this.getBitBnsStatus();
   }
 
 
   getDollarValue() {
     // Make a request for a user with a given ID
     axios.get('https://api.fixer.io/latest?base=USD')
-      .then(function (response) {
+      .then( (response) => {
+        console.log("function is called");
         console.log(response);
+        this.setDollarValue(response.data.rates.INR);
+        // this.setState({dollarValue: response.data.rates.INR});
+        // this.setState({
+        //   dollarValue: response.data.rates.INR
+        // });
       })
-      .catch(function (error) {
+      .catch( (error) => {
         console.log(error);
       });
   }
+
+  setDollarValue => (text) {
+    this.setState({
+      dollarValue: text
+    });
+  }
+
+  // getBitBnsStatus() {
+  //   axios.get('https://bitbns.com/order/getTickerAll')
+  //      .then((result) => {
+  //          console.log(result);
+  //          // this.setState({
+  //          //    xlmbitbns: '',
+  //          //    xrpbitbns: '',
+  //          //    neobitbns: '',
+  //          //    gasbitbns: '',
+  //          // });
+  //      })
+  // }
 
 
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Enter Value!</Text>
+        <Text>Enter Value {this.state.dollarValue}</Text>
         <TextInput
           style={{height: 40}}
           placeholder="Investment amount"
-          onChangeText={(text) => this.setState({text})}
+          onChangeText={(text) => this.setState({dollarValue})}
         />
         <Text style={{padding: 10, fontSize: 42}}>
-          {this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
+          {this.state.dollarValue}
         </Text>
       </View>
     );
